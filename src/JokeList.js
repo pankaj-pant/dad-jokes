@@ -19,14 +19,20 @@ const JokeList = () => {
     const fetchJoke = async () => {
         let i = 0
         let fetchedJokes = []
+        let seenJokes = new Set(jokes.map(j => j.joke))
+        //console.log(seenJokes)
         while (i < 10) {
             let response = await axios.get("https://icanhazdadjoke.com/", {headers: {Accept: "application/json"}})
-            console.log(response.data.joke)
-            fetchedJokes.push({joke: response.data.joke, votes: 0, id: uuidv4()})
-            i++
+            //console.log(response.data.joke)
+            if (!seenJokes.has(response.data.joke)){
+                fetchedJokes.push({joke: response.data.joke, votes: 0, id: uuidv4()})
+                i++
+            } else {
+                console.log("Duplicate joke found --->", response.data.joke)
+            }
         }
         setJokes([...jokes, ...fetchedJokes])
-        console.log("Fetched jokes:", i)
+        //console.log("Fetched jokes:", i)
         setJokeLoading(false)
 
     }
@@ -36,7 +42,7 @@ const JokeList = () => {
     }
 
     const handleClick = () => {
-        console.log("button clicked")
+        //console.log("button clicked")
         setJokeLoading(true)
         fetchJoke()
     }
