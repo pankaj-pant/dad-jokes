@@ -16,6 +16,8 @@ const JokeList = () => {
         window.localStorage.setItem("jokes", JSON.stringify(jokes))
     }, [jokes]);
 
+    jokes.sort((a, b) => b.votes - a.votes)
+
     const fetchJoke = async () => {
         let i = 0
         let fetchedJokes = []
@@ -71,6 +73,8 @@ const JokeList = () => {
             </div>
         )
     }
+
+
 
     return (
         <>
